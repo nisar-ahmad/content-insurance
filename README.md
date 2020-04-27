@@ -1,4 +1,4 @@
-# Content Limit Insurance
+# Contents Limit Insurance
 A sample app to demonstrate Renter's Contents Limit Insurance.
 
 * Users can add and delete items. Each item has a value and is categorized. 
