@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { Route } from 'react-router';
+import { Route, Switch } from 'react-router';
 import Layout from './components/Layout';
 import Home from './components/Home';
-import Counter from './components/Counter';
-import FetchData from './components/FetchData';
+import Items from './components/Items';
+import { NotFoundPage } from './components/NotFoundPage'
 
 import './custom.css'
 
 export default () => (
     <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
+        <Switch>
+            <Route exact path='/' component={Items} />
+            <Route path='/items' component={Items} />
+            <Route path='/home' component={Home} />
+            <Route component={NotFoundPage} />
+        </Switch>
     </Layout>
 );

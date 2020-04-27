@@ -3,10 +3,10 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import App from './App';
-import configureStore from './store/configureStore';
+import Items from './Items';
+import configureStore from '../store/configureStore';
 
-it('renders without crashing', () => {
+it('Item component renders title correctly', () => {
     // Create browser history to use in the Redux store
     const history = createBrowserHistory();
 
@@ -16,7 +16,10 @@ it('renders without crashing', () => {
     ReactDOM.render(
         <Provider store={store}>
             <MemoryRouter>
-                <App/>
+                <Items />
             </MemoryRouter>
         </Provider>, document.createElement('div'));
+
+    var titleLabel = document.getElementsByName('h4');
+    expect(titleLabel?.innerHTML).not.toBeNull(); 
 });

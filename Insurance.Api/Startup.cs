@@ -1,8 +1,10 @@
+using AutoMapper;
 using Insurance.Data.EFCore;
 using Insurance.Data.EFCore.Repositories;
 using Insurance.Data.Interfaces;
 using Insurance.Models.Content;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,10 +27,17 @@ namespace Insurance.Contents.Api
         {
             services.AddMvc();
             services.AddControllers();
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.WithOrigins(Configuration["FrontEnd"]).AllowAnyHeader().AllowAnyMethod());
+            });
+
+            services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<InsuranceDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("InsuranceDBContext")));
 
             services.AddScoped<IRepository<Item>, ItemRepository>();
+            services.AddScoped<IRepository<Category>, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +48,15 @@ namespace Insurance.Contents.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<InsuranceDBContext>();
+                context.SeedData();
+            }
+
+            app.UseCors(options => options.WithOrigins(Configuration["FrontEnd"]).AllowAnyHeader().AllowAnyMethod());
             app.UseRouting();
+            //app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

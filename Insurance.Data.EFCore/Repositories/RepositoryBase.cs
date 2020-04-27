@@ -14,7 +14,7 @@ namespace Insurance.Data.EFCore.Repositories
         where TEntity : class
         where TContext : DbContext
     {
-        private readonly TContext _context;
+        protected readonly TContext _context;
 
         /// <summary>
         /// Constructor
@@ -30,7 +30,7 @@ namespace Insurance.Data.EFCore.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<TEntity> Add(TEntity entity)
+        public virtual async Task<TEntity> Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
             await _context.SaveChangesAsync();
@@ -42,7 +42,7 @@ namespace Insurance.Data.EFCore.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<TEntity> Delete(int id)
+        public virtual async Task<TEntity> Delete(int id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
             if (entity == null)
@@ -61,7 +61,7 @@ namespace Insurance.Data.EFCore.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<TEntity> Get(int id)
+        public virtual async Task<TEntity> Get(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
@@ -70,7 +70,7 @@ namespace Insurance.Data.EFCore.Repositories
         /// Gets all entities
         /// </summary>
         /// <returns></returns>
-        public async Task<List<TEntity>> GetAll()
+        public virtual async Task<List<TEntity>> GetAll()
         {
             return await _context.Set<TEntity>().ToListAsync();
         }
@@ -80,7 +80,7 @@ namespace Insurance.Data.EFCore.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<TEntity> Update(TEntity entity)
+        public virtual async Task<TEntity> Update(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();

@@ -51,22 +51,46 @@ namespace Insurance.Data.EFCore
         /// <param name="options"></param>
         public InsuranceDBContext(DbContextOptions<InsuranceDBContext> options) : base(options)
         {
-            SeedData();
         }
 
-        private void SeedData()
+        public void SeedData()
         {
-            if (!Categories.Any())
+            Database.EnsureCreated();
+
+            if (Categories.Any())
+                return;
+
+            var categories = new List<Category>()
             {
-                var categories = new List<Category>()
-                {
-                   new Category { Name = "Clothing" },
-                   new Category { Name = "Electronics" },
-                   new Category { Name = "Kitchen" }
-                };
-                Categories.AddRange(categories);
-                SaveChanges();
-            }
+                new Category { Name = "Clothing" },
+                new Category { Name = "Electronics" },
+                new Category { Name = "Kitchen" },
+                new Category { Name = "Other" }
+            };
+
+            Categories.AddRange(categories);
+            SaveChanges();
+
+            var items = new List<Item>
+            {
+                // Clothing
+                new Item{ Name = "Shirts", Value = 1100, CategoryId = categories[0].CategoryId },
+                new Item{ Name = "Jeans", Value = 1100, CategoryId = categories[0].CategoryId },
+
+                // Electronics
+                new Item{ Name = "TV", Value = 2000, CategoryId = categories[1].CategoryId },
+                new Item{ Name = "Playstation", Value = 400, CategoryId = categories[1].CategoryId },
+                new Item{ Name = "Stereo", Value = 1600, CategoryId = categories[1].CategoryId },
+
+
+                new Item{ Name = "Pots and Pans", Value = 3000, CategoryId = categories[2].CategoryId },
+                new Item{ Name = "Flatware", Value = 500, CategoryId = categories[2].CategoryId },
+                new Item{ Name = "Knife Set", Value = 500, CategoryId = categories[2].CategoryId },
+                new Item{ Name = "Misc", Value = 1000, CategoryId = categories[2].CategoryId },
+            };
+
+            Items.AddRange(items);
+            SaveChanges();
         }
     }
 }

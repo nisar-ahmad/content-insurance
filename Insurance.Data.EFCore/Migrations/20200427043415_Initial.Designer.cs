@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Insurance.Data.EFCore.Migrations
 {
     [DbContext(typeof(InsuranceDBContext))]
-    [Migration("20200426005206_Initial")]
+    [Migration("20200427043415_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
